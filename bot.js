@@ -4,8 +4,19 @@ var config = require('./config.json');
 var bot = new Discord.Client();
 var spreadsheet = new GoogleSpreadsheet('1H2rDTyrg4g1sGVbiWMW7dL-YEzQ4RJX7eD9dZNbrhHk');
 
+function startMOTDTimer() {
+	setInterval(function () {
+		spreadsheet.getRows(1, function (err, data) {
+			data.forEach(function (row) {
+				if (row.name === "MOTD") bot.sendMessage("108312291618885632", row.message);;
+			});
+		});
+	}, (10800 * 1000));
+}
+
 bot.on('ready', function () {
 	console.log('Gnarly is initialised and ready for use!');
+	startMOTDTimer();
 });
 
 bot.on('message', function (message) {
@@ -13,10 +24,26 @@ bot.on('message', function (message) {
 	if (message.content.substr(0, 1) !== '!') return;
 	var structure = message.content.split(' ');
 	var command = structure[0];
-	var context = structure[1];
+	var theRest = structure.slice(1, structure.length);
+	var context = theRest.join(" ");
 
 	if (command === '!ping') {
 		message.reply('pong');
+	}
+
+	if (command === '!help') {
+		var commands = [
+			{ command: '!ping', info: "Replies with pong" },
+			{ command: '!motd', info: "Replies with the current Message of the Day!" },
+			{ command: '!territories', info: "Replies with the guilds current territories and their food timers" },
+			{ command: '!crafter <item>', info: "Replies with the guild crafters for the queried item" },
+		];
+
+		var help = commands.map(function (item) {
+			return (item.command + " :: " + item.info + "\n");
+		});
+
+		message.reply(help);
 	}
 
 	if (command === '!motd') {
@@ -31,6 +58,20 @@ bot.on('message', function (message) {
 		spreadsheet.getRows(2, function (err, data) {
 			data.forEach(function (row) {
 				message.reply(row.territory + " :: " + row.timer);
+			});
+		});
+	}
+
+	if (command === '!crafter') {
+		spreadsheet.getRows(3, function (err, data) {
+			data.forEach(function (row) {
+				if (context.toLowerCase() === row.item.toLowerCase()) {
+					message.reply("Guild crafters for: " + row.item, false, function () {
+						message.reply("Primary: " + row.primarycrafter);
+						message.reply("Secondary: " + row.secondarycrafter);
+						message.reply("Tertiary: " + row.tertiarycrafter);
+					});
+				}
 			});
 		});
 	}
