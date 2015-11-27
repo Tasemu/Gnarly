@@ -40,10 +40,10 @@ bot.on('message', function (message) {
 		];
 
 		var help = commands.map(function (item) {
-			return (item.command + " :: " + item.info + "\n");
+			return ("\n" + item.command + " :: " + item.info);
 		});
 
-		message.reply(help);
+		message.reply(help.join(''));
 	}
 
 	if (command === '!motd') {
