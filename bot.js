@@ -37,6 +37,7 @@ bot.on('message', function (message) {
 			{ command: '!motd', info: "Replies with the current Message of the Day!" },
 			{ command: '!territories', info: "Replies with the guilds current territories and their food timers" },
 			{ command: '!crafter <item>', info: "Replies with the guild crafters for the queried item" },
+			{ command: '!items', info: "Lists all items available for use with other commands" }
 		];
 
 		var help = commands.map(function (item) {
@@ -73,6 +74,15 @@ bot.on('message', function (message) {
 					});
 				}
 			});
+		});
+	}
+
+	if (command === '!items') {
+		spreadsheet.getRows(3, function (err, data) {
+			var items = data.map(function (row) {
+				return ("\n" + row.item.toLowerCase());
+			});
+			message.reply(items.join(''));
 		});
 	}
 
