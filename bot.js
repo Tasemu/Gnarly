@@ -1,5 +1,6 @@
 var Discord = require('discord.js');
 var GoogleSpreadsheet = require('google-spreadsheet');
+var moment = require('moment');
 var config = require('./config.json');
 var bot = new Discord.Client();
 var spreadsheet = new GoogleSpreadsheet('1H2rDTyrg4g1sGVbiWMW7dL-YEzQ4RJX7eD9dZNbrhHk');
@@ -57,9 +58,14 @@ bot.on('message', function (message) {
 
 	if (command === '!territories') {
 		spreadsheet.getRows(2, function (err, data) {
-			data.forEach(function (row) {
-				message.reply(row.territory + " :: " + row.timer);
+			var territories = data.map(function (row) {
+				var time = moment(row.lastfed)
+					.add(row.days, 'days')
+					.add(row.hours, 'hours')
+					.add(row.minutes, 'minutes');
+				return ("\n" + row.territory + " :: " + moment().to(time));
 			});
+			message.reply(territories.join(''));
 		});
 	}
 
