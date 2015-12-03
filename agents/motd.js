@@ -1,5 +1,8 @@
+'use strict';
+
 var spreadsheet = require('../spreadsheet.js');
 var MAIN_CHANNEL_ID = '108312291618885632'; // #members-chat
+var ONE_HOUR = 60 * 60 * 1000;
 
 module.exports = function (bot) {
 	setInterval(function () {
@@ -8,5 +11,5 @@ module.exports = function (bot) {
 				if (row.name === 'MOTD') bot.sendMessage(MAIN_CHANNEL_ID, row.message);
 			});
 		});
-	}, (10800 * 1000));
+	}, (3 * ONE_HOUR));
 };
