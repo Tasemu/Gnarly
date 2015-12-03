@@ -8,7 +8,7 @@ var client = new Discord.Client();
 var config;
 
 try {
-	config = JSON.stringify(fs.readFileSync(path.join(__dirname, './config.js'), 'UTF-8'));
+	config = JSON.parse(fs.readFileSync(path.join(__dirname, './config.json'), 'UTF-8'));
 } catch (err) {
 	if (err.code === 'ENOENT') {
 		  // no config file is present; this is probably a development environment
