@@ -12,4 +12,4 @@ module.exports = function (message) {
 	});
 };
 
-module.exports = { info: 'Replies with the current Message of the Day!' };
+module.exports.help = { info: 'Replies with the current Message of the Day!' };
