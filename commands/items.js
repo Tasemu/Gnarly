@@ -1,15 +1,17 @@
+'use strict';
+
 var spreadsheet = require('../spreadsheet.js');
 
-module.exports = function (message) {
+module.exports = function (message, context, done) {
 	spreadsheet.getRows(3, function (err, data) {
 		if (err) {
-			console.error(err);
-			return;
+			return done(err);
 		}
 		var items = data.map(function (row) {
 			return ('\n' + row.item.toLowerCase());
 		});
 		message.reply(items.join(''));
+		done();
 	});
 };
 

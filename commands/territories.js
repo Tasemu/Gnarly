@@ -1,11 +1,12 @@
+'use strict';
+
 var moment = require('moment');
 var spreadsheet = require('../spreadsheet.js');
 
-module.exports = function (message) {
+module.exports = function (message, context, done) {
 	spreadsheet.getRows(2, function (err, data) {
 		if (err) {
-			console.error(err);
-			return;
+			return done(err);
 		}
 		var territories = data.map(function (row) {
 			var time = moment(row.lastfed)
@@ -15,6 +16,7 @@ module.exports = function (message) {
 			return ("\n" + row.territory + " :: " + moment().to(time));
 		});
 		message.reply(territories.join(''));
+		done();
 	});
 };
 

@@ -4,13 +4,16 @@
   "description": "Discord bot for the Albion Online clan, Narwhals",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Montague Monro",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^5.0.1",
     "google-spreadsheet": "^1.0.1",
     "moment": "^2.10.6"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4"
   }
 }
