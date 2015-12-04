@@ -1,5 +1,7 @@
 'use strict';
 
+import Bluebird from 'bluebird';
+
 export default class {
 
 	constructor (content) {
@@ -10,6 +12,11 @@ export default class {
 	reply (text, cb) {
 		this.replies.push(text);
 		if (cb) cb();
+	}
+
+	replyp (text) {
+		this.reply(text);
+		return Bluebird.resolve();
 	}
 
 };

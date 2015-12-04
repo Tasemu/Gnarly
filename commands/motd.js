@@ -1,15 +1,11 @@
 'use strict';
 
-import Bluebird from 'bluebird';
-import * as spreadsheet from '../spreadsheet.js';
-
-const getRows = Bluebird.promisify(spreadsheet.api.getRows, {context: spreadsheet.api});
+import {getRows, sheets} from '../spreadsheet.js';
 
 export async function handle (message, context) {
-	const reply = Bluebird.promisify(message.reply, {context: message});
-	const data = await getRows(spreadsheet.sheets.info);
+	const data = await getRows(sheets.info);
 	for (let row of data) {
-		if (row.name === 'MOTD') await reply(row.message);
+		if (row.name === 'MOTD') await message.replyp(row.message);
 	};
 };
 

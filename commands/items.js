@@ -1,15 +1,11 @@
 'use strict';
 
-import Bluebird from 'bluebird';
-import * as spreadsheet from '../spreadsheet.js';
-
-const getRows = Bluebird.promisify(spreadsheet.api.getRows, {context: spreadsheet.api});
+import {getRows, sheets} from '../spreadsheet.js';
 
 export async function handle (message, context) {
-	const reply = Bluebird.promisify(message.reply, {context: message});
-	const data = await getRows(spreadsheet.sheets.crafters);
+	const data = await getRows(sheets.crafters);
 	const items = data.map((row) => `\n${row.item.toLowerCase()}`);
-	await reply(items.join(''));
+	await message.replyp(items.join(''));
 };
 
 export const help = { info: 'Lists all items available for use with other commands' };

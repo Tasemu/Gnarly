@@ -22,7 +22,8 @@ export default (bot) => {
 	bot.on('message', async (message) => {
 		if (message.content.substr(0, 1) !== '!') return;
 
-		const reply = Bluebird.promisify(message.reply, {context: message});
+		message.replyp = Bluebird.promisify(message.reply, {context: message});
+
 		const structure = message.content.split(' ');
 		const command = structure[0];
 		const theRest = structure.slice(1, structure.length);
@@ -33,7 +34,7 @@ export default (bot) => {
 				const item = commands[key].help;
 				return `\n!${key}${item.context ? ' ' + item.context : ''} :: ${item.info}`;
 			});
-			await reply(help.join(''));
+			await message.replyp(help.join(''));
 		} else {
 			const commandFn = commands[command.substring(1)];
 			if (commandFn) {
