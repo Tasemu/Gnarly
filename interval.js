@@ -1,18 +1,18 @@
 'use strict';
 
-var testMode = false;
-var tokens = {};
+let testMode = false;
+let tokens = {};
 
-module.exports.enableTestMode = function () {
+export function enableTestMode () {
 	testMode = true;
 };
 
-module.exports.disableTestMode = function () {
+export function disableTestMode () {
 	testMode = false;
 	tokens = {};
 };
 
-module.exports.set = function (cb, frequency) {
+export function set (cb, frequency) {
 	if (testMode) {
 		var token = Math.floor(Math.random() * 1000000); // largeish random number
 		tokens[token] = cb;
@@ -22,7 +22,7 @@ module.exports.set = function (cb, frequency) {
 	}
 };
 
-module.exports.clear = function (token) {
+export function clear (token) {
 	if (testMode) {
 		delete tokens[token];
 	} else {
@@ -30,7 +30,7 @@ module.exports.clear = function (token) {
 	}
 };
 
-module.exports.trigger = function (token) {
+export function trigger (token) {
 	if (testMode) {
 		return tokens[token]();
 	} else {

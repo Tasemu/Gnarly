@@ -1,8 +1,8 @@
 'use strict';
 
-var EventEmitter = require('events');
+import EventEmitter from 'events';
 
-module.exports = class extends EventEmitter {
+export default class extends EventEmitter {
 
 	constructor () {
 		super();
@@ -10,7 +10,7 @@ module.exports = class extends EventEmitter {
 	}
 
 	sendMessage (channel, message) {
-		this.messages.push({channel: channel, message: message});
+		this.messages.push({channel, message});
 	}
 
 };

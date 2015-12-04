@@ -1,16 +1,14 @@
 'use strict';
 
-var Bluebird = require('bluebird');
-var spreadsheet = require('../spreadsheet.js');
-var getRows = Bluebird.promisify(spreadsheet.api.getRows, spreadsheet.api);
+import Bluebird from 'bluebird';
+import * as spreadsheet from '../spreadsheet.js';
+const getRows = Bluebird.promisify(spreadsheet.api.getRows, spreadsheet.api);
 
-module.exports = function (message, context) {
-	return getRows(spreadsheet.sheets.crafters).then(function (data) {
-		var items = data.map(function (row) {
-			return ('\n' + row.item.toLowerCase());
-		});
+export function handle (message, context) {
+	return getRows(spreadsheet.sheets.crafters).then((data) => {
+		var items = data.map((row) => `\n${row.item.toLowerCase()}`);
 		message.reply(items.join(''));
 	});
 };
 
-module.exports.help = { info: 'Lists all items available for use with other commands' };
+export const help = { info: 'Lists all items available for use with other commands' };

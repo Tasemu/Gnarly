@@ -2,11 +2,11 @@
 
 var Bluebird = require('bluebird');
 
-module.exports = function (message, context) {
+export function handle (message, context) {
 	message.reply('pong');
 
 	// make sure the function returns a promise even though we don't do anything async
 	return Bluebird.resolve();
 };
 
-module.exports.help = { info: 'Replies with pong' };
+export const help = { info: 'Replies with pong' };

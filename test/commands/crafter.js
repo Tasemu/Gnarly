@@ -1,11 +1,13 @@
-var assert = require('assert');
-var command = require('../../commands/crafter.js');
-var FakeMessage = require('../util/fakemessage.js');
+'use strict';
 
-describe('./commands/crafter.js', function () {
-	it('doesn\'t fail', function () {
-		var message = new FakeMessage('!crafter light cloth');
-		return command(message, 'light cloth').then(function () {
+import assert from 'assert';
+import {handle} from '../../commands/crafter.js';
+import FakeMessage from '../util/fakemessage.js';
+
+describe('./commands/crafter.js', () => {
+	it('doesn\'t fail', () => {
+		const message = new FakeMessage('!crafter light cloth');
+		return handle(message, 'light cloth').then(() => {
 			assert.notEqual(message.replies.length, 0);
 		});
 	});

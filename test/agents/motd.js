@@ -1,26 +1,28 @@
-var assert = require('assert');
-var Bluebird = require('bluebird');
-var interval = require('../../interval.js');
-var agent = require('../../agents/motd.js');
-var FakeClient = require('../util/fakeclient.js');
+'use strict';
 
-describe('./agents/motd.js', function () {
-	beforeEach(function () {
+import assert from 'assert';
+import Bluebird from 'bluebird';
+import * as interval from '../../interval.js';
+import * as agent from '../../agents/motd.js';
+import FakeClient from '../util/fakeclient.js';
+
+describe('./agents/motd.js', () => {
+	beforeEach(() => {
 		interval.enableTestMode();
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		interval.disableTestMode();
 	});
 
-	it('doesn\'t fail', function () {
-		var client = new FakeClient();
+	it('doesn\'t fail', () => {
+		const client = new FakeClient();
 		return Bluebird.resolve()
-			.then(function () {
-				var token = agent.start(client);
+			.then(() => {
+				const token = agent.start(client);
 				return interval.trigger(token);
 			})
-			.then(function () {
+			.then(() => {
 				assert.notEqual(client.messages.length, 0);
 			});
 	});

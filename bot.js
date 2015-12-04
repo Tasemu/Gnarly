@@ -1,10 +1,11 @@
 'use strict';
 
-var Bluebird = require('bluebird');
-var agents = [
+import Bluebird from 'bluebird';
+
+const agents = [
 	require('./agents/motd.js')
 ];
-var commands = {
+const commands = {
 	crafter: require('./commands/crafter.js'),
 	items: require('./commands/items.js'),
 	motd: require('./commands/motd.js'),
@@ -12,24 +13,22 @@ var commands = {
 	territories: require('./commands/territories.js')
 };
 
-module.exports = function (bot) {
-	bot.on('ready', function () {
+export default (bot) => {
+	bot.on('ready', () => {
 		console.log('Gnarly is initialised and ready for use!');
-		agents.forEach(function (agent) {
-			agent.start(bot);
-		});
+		agents.forEach((agent) => agent.start(bot));
 	});
 
-	bot.on('message', function (message) {
+	bot.on('message', (message) => {
 		if (message.content.substr(0, 1) !== '!') return;
-		var structure = message.content.split(' ');
-		var command = structure[0];
-		var theRest = structure.slice(1, structure.length);
-		var context = theRest.join(' ');
+		const structure = message.content.split(' ');
+		const command = structure[0];
+		const theRest = structure.slice(1, structure.length);
+		const context = theRest.join(' ');
 
 		if (command === '!help') {
-			var help = Object.keys(commands).sort().map(function (key) {
-				var item = commands[key].help;
+			const help = Object.keys(commands).sort().map((key) => {
+				const item = commands[key].help;
 				return '\n!' + key + (item.context ? ' ' + item.context : '') + ' :: ' + item.info;
 			});
 			message.reply(help.join(''));
@@ -37,20 +36,15 @@ module.exports = function (bot) {
 			var commandFn = commands[command.substring(1)];
 			if (commandFn) {
 				Bluebird.resolve()
-					.then(commandFn(message, context))
-					.catch(function (err) {
-						console.error(err);
-					});
+					.then(commandFn.handle(message, context))
+					.catch((err) => console.error(err));
 			}
 		}
 	});
 
 	bot.on('disconnected', function () {
-		console.log('Disconnected, exiting!');
-		agents.forEach(function (agent) {
-			agent.stop();
-		});
-		process.exit(1);
+		console.log('Disconnected. Stopping agents!');
+		agents.forEach((agent) => agent.stop());
 	});
 
 	bot.on('debug', function (message) {
