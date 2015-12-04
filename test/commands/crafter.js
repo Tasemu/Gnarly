@@ -5,10 +5,9 @@ import {handle} from '../../commands/crafter.js';
 import FakeMessage from '../util/fakemessage.js';
 
 describe('./commands/crafter.js', () => {
-	it('doesn\'t fail', () => {
+	it('doesn\'t fail', async () => {
 		const message = new FakeMessage('!crafter light cloth');
-		return handle(message, 'light cloth').then(() => {
-			assert.notEqual(message.replies.length, 0);
-		});
+		await handle(message, 'light cloth');
+		assert.notEqual(message.replies.length, 0);
 	});
 });

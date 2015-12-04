@@ -15,15 +15,10 @@ describe('./agents/motd.js', () => {
 		interval.disableTestMode();
 	});
 
-	it('doesn\'t fail', () => {
+	it('doesn\'t fail', async () => {
 		const client = new FakeClient();
-		return Bluebird.resolve()
-			.then(() => {
-				const token = agent.start(client);
-				return interval.trigger(token);
-			})
-			.then(() => {
-				assert.notEqual(client.messages.length, 0);
-			});
+		const token = agent.start(client);
+		await interval.trigger(token);
+		assert.notEqual(client.messages.length, 0);
 	});
 });

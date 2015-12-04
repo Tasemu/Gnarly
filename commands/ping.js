@@ -1,12 +1,10 @@
 'use strict';
 
-var Bluebird = require('bluebird');
+import Bluebird from 'bluebird';
 
-export function handle (message, context) {
-	message.reply('pong');
-
-	// make sure the function returns a promise even though we don't do anything async
-	return Bluebird.resolve();
+export async function handle (message, context) {
+	const reply = Bluebird.promisify(message.reply, {context: message});
+	await reply('pong');
 };
 
 export const help = { info: 'Replies with pong' };

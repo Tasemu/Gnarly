@@ -19,8 +19,10 @@ export default (bot) => {
 		agents.forEach((agent) => agent.start(bot));
 	});
 
-	bot.on('message', (message) => {
+	bot.on('message', async (message) => {
 		if (message.content.substr(0, 1) !== '!') return;
+
+		const reply = Bluebird.promisify(message.reply, {context: message});
 		const structure = message.content.split(' ');
 		const command = structure[0];
 		const theRest = structure.slice(1, structure.length);
@@ -29,15 +31,17 @@ export default (bot) => {
 		if (command === '!help') {
 			const help = Object.keys(commands).sort().map((key) => {
 				const item = commands[key].help;
-				return '\n!' + key + (item.context ? ' ' + item.context : '') + ' :: ' + item.info;
+				return `\n!${key}${item.context ? ' ' + item.context : ''} :: ${item.info}`;
 			});
-			message.reply(help.join(''));
+			await reply(help.join(''));
 		} else {
-			var commandFn = commands[command.substring(1)];
+			const commandFn = commands[command.substring(1)];
 			if (commandFn) {
-				Bluebird.resolve()
-					.then(commandFn.handle(message, context))
-					.catch((err) => console.error(err));
+				try {
+					await commandFn.handle(message, context);
+				} catch (err) {
+					console.error(err);
+				}
 			}
 		}
 	});
@@ -48,11 +52,11 @@ export default (bot) => {
 	});
 
 	bot.on('debug', function (message) {
-		console.log('Gnarly Debug Message: ' + message);
+		console.log(`Gnarly Debug Message: ${message}`);
 	});
 
 	bot.on('error', function (error) {
-		console.error('Error Caught: ' + error);
+		console.error('Error Caught:', error);
 	});
 
 	return bot;

@@ -5,10 +5,9 @@ import {handle} from '../../commands/motd.js';
 import FakeMessage from '../util/fakemessage.js';
 
 describe('./commands/motd.js', () => {
-	it('doesn\'t fail', () => {
+	it('doesn\'t fail', async () => {
 		const message = new FakeMessage('!motd');
-		return handle(message, '').then(() => {
-			assert.notEqual(message.replies.length, 0);
-		});
+		await handle(message, '');
+		assert.notEqual(message.replies.length, 0);
 	});
 });

@@ -7,8 +7,9 @@ export default class {
 		this.content = content;
 	}
 
-	reply (text) {
+	reply (text, cb) {
 		this.replies.push(text);
+		if (cb) cb();
 	}
 
 };

@@ -5,18 +5,16 @@ import {handle} from '../../commands/ping.js';
 import FakeMessage from '../util/fakemessage.js';
 
 describe('./commands/ping.js', () => {
-	it('doesn\'t fail', () => {
+	it('doesn\'t fail', async () => {
 		const message = new FakeMessage('!ping');
-		return handle(message, '').then(() => {
-			assert.notEqual(message.replies.length, 0);
-		});
+		await handle(message, '');
+		assert.notEqual(message.replies.length, 0);
 	});
 
-	it('returns "pong"', () => {
+	it('returns "pong"', async () => {
 		const message = new FakeMessage('!ping');
-		return handle(message, '').then(() => {
-			assert.equal(message.replies.length, 1);
-			assert.equal(message.replies[0], 'pong');
-		});
+		await handle(message, '');
+		assert.equal(message.replies.length, 1);
+		assert.equal(message.replies[0], 'pong');
 	});
 });

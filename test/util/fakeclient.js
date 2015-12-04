@@ -9,8 +9,9 @@ export default class extends EventEmitter {
 		this.messages = [];
 	}
 
-	sendMessage (channel, message) {
+	sendMessage (channel, message, cb) {
 		this.messages.push({channel, message});
+		if (cb) cb();
 	}
 
 };
