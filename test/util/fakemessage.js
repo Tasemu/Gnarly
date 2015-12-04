@@ -2,13 +2,13 @@
 
 module.exports = class {
 
-  constructor (content) {
-    this.replies = [];
-    this.content = content;
-  }
+	constructor (content) {
+		this.replies = [];
+		this.content = content;
+	}
 
-  reply (text) {
-    this.replies.push(text);
-  }
+	reply (text) {
+		this.replies.push(text);
+	}
 
 };
