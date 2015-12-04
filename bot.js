@@ -1,5 +1,6 @@
 'use strict';
 
+var Bluebird = require('bluebird');
 var agents = [
 	require('./agents/motd.js')
 ];
@@ -15,7 +16,7 @@ module.exports = function (bot) {
 	bot.on('ready', function () {
 		console.log('Gnarly is initialised and ready for use!');
 		agents.forEach(function (agent) {
-			agent(bot);
+			agent.start(bot);
 		});
 	});
 
@@ -34,14 +35,21 @@ module.exports = function (bot) {
 			message.reply(help.join(''));
 		} else {
 			var commandFn = commands[command.substring(1)];
-			if (commandFn) commandFn(message, context, function (err) {
-				if (err) console.error(err);
-			});
+			if (commandFn) {
+				Bluebird.resolve()
+					.then(commandFn(message, context))
+					.catch(function (err) {
+						console.error(err);
+					});
+			}
 		}
 	});
 
 	bot.on('disconnected', function () {
 		console.log('Disconnected, exiting!');
+		agents.forEach(function (agent) {
+			agent.stop();
+		});
 		process.exit(1);
 	});
 
