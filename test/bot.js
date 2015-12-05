@@ -1,25 +1,33 @@
 'use strict';
 
-var assert = require('assert');
-var bot = require('../bot.js');
-var FakeClient = require('./util/fakeclient.js');
-var FakeMessage = require('./util/fakemessage.js');
+import assert from 'assert';
+import bot from '../bot.js';
+import * as interval from '../interval.js';
+import FakeClient from './util/fakeclient.js';
+import FakeMessage from './util/fakemessage.js';
 
-describe('./bot.js', function () {
-	var client;
+describe('./bot.js', () => {
+	let client;
 
-	beforeEach(function () {
+	beforeEach(() => {
+		interval.enableTestMode();
 		client = bot(new FakeClient());
+		client.emit('ready');
 	});
 
-	it('help doesn\'t fail', function () {
-		var message = new FakeMessage('!help');
+	afterEach(() => {
+		client.emit('disconnected');
+		interval.disableTestMode();
+	});
+
+	it('help doesn\'t fail', () => {
+		const message = new FakeMessage('!help');
 		client.emit('message', message);
 		assert.equal(message.replies.length, 1);
 	});
 
-	it('ping works', function () {
-		var message = new FakeMessage('!ping');
+	it('ping works', () => {
+		const message = new FakeMessage('!ping');
 		client.emit('message', message);
 		assert.equal(message.replies.length, 1);
 		assert.equal(message.replies[0], 'pong');

@@ -1,16 +1,17 @@
 'use strict';
 
-var EventEmitter = require('events');
+import EventEmitter from 'events';
 
-module.exports = class extends EventEmitter {
+export default class extends EventEmitter {
 
 	constructor () {
 		super();
 		this.messages = [];
 	}
 
-	sendMessage (channel, message) {
-		this.messages.push({channel: channel, message: message});
+	sendMessage (channel, message, cb) {
+		this.messages.push({channel, message});
+		if (cb) cb();
 	}
 
 };

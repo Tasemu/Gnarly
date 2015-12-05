@@ -1,12 +1,13 @@
-var assert = require('assert');
-var command = require('../../commands/items.js');
-var FakeMessage = require('../util/fakemessage.js');
+'use strict';
 
-describe('./commands/items.js', function () {
-	it('doesn\'t fail', function () {
-		var message = new FakeMessage('!items');
-		return command(message, '').then(function () {
-			assert.notEqual(message.replies.length, 0);
-		});
+import assert from 'assert';
+import {handle} from '../../commands/items.js';
+import FakeMessage from '../util/fakemessage.js';
+
+describe('./commands/items.js', () => {
+	it('doesn\'t fail', async () => {
+		const message = new FakeMessage('!items');
+		await handle(message, '');
+		assert.notEqual(message.replies.length, 0);
 	});
 });
