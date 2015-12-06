@@ -12,4 +12,4 @@ client.on('disconnected', () => {
 	process.exit(1);
 });
 
-client.login(process.env['GNARLY-LOGIN-EMAIL'], process.env['GNARLY-LOGIN-PASSWORD']);
+client.login(process.env['GNARLY_LOGIN_EMAIL'], process.env['GNARLY_LOGIN_PASSWORD']);
