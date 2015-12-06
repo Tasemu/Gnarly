@@ -7,7 +7,7 @@ const client = new Discord.Client();
 
 bot(client);
 
-bot.on('disconnected', () => {
+client.on('disconnected', () => {
 	console.log('Disconnected, exiting!');
 	process.exit(1);
 });
