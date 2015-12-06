@@ -1,9 +1,13 @@
 {
   "name": "gnarly",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Discord bot for the Albion Online clan, Narwhals",
   "private": true,
   "main": "bot.js",
+  "engines": {
+    "node": "^4",
+    "npm": "^3"
+  },
   "babel": {
     "presets": [
       "es2015",
